@@ -1,9 +1,9 @@
 grammar sd;
 
-program         : '('? application ')'?
+program         : application
                 ;
 
-application     : exprAbs application
+application     : exprAbs application+
                 ;
 
 exprAbs         : expr
@@ -11,25 +11,25 @@ exprAbs         : expr
                 ;
 
 
-abstrcation     : '(' 'λ' id ':' type ('→'|'=>') application ')'
+abstraction     : '(' 'λ' ID ':' type '=>' application ')'
                 ;
 
 expr            : ifThen
                 | isZeroCheck
                 | arithmeticOps
-                | id
-                | paramExpr
                 | ZERO
                 | TRUE
                 | FALSE
+                | ID
+	            | paramExpr
                 ;
 
 // TODO: Check for reserved words
-id              : [a-z]+
+ID              : [a-z]+
                 ;
 
-type            : 'Nat'
-                | 'Bool'
+type            : NAT
+                | BOOL
                 ;
 
 ifThen          : IF application THEN application ELSE application
@@ -48,10 +48,26 @@ operator        : SUCC
                 | PRED
                 ;
 
-ZERO            : [0]
+RESERVEDWORDS   : IF
+                | THEN
+                | ELSE
+                | PRED
+                | SUCC
+                | TYPES
+                | ISZERO
+                | TRUE
+                | FALSE
                 ;
 
-Succ            : 'succ'
+TYPES           : NAT
+                | BOOL
+                ;
+
+
+ZERO            : '0'
+                ;
+
+SUCC            : 'succ'
                 ;
 
 PRED            : 'pred'
@@ -72,5 +88,14 @@ THEN            : 'then'
 ELSE            : 'else'
                 ;
 
-ISZERO          : 'isZero'
+ISZERO          : 'iszero'
+                ;
+
+NAT             : 'Nat'
+                ;
+
+BOOL            : 'Bool'
+                ;
+
+WS              : [ \t\r\n]+ -> skip
                 ;

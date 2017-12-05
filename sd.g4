@@ -1,70 +1,36 @@
 grammar sd;
 
-program         : application
+expr            : ID
+                | DIGIT
+                | 'λ' ID ':' type ('=>'|'→') expr
+                | expr expr
+                | '(' expr ')'
+                | arithmeticOps expr
+                | ISZERO expr
+                | ifThen
                 ;
 
-application     : exprAbs application+
+arithmeticOps   : SUCC
+                | PRED
                 ;
 
-exprAbs         : expr
-                | abstraction
-                ;
-
-
-abstraction     : '(' 'λ' ID ':' type '=>' application ')'
-                ;
-
-expr            : ifThen
-                | isZeroCheck
-                | arithmeticOps
-                | ZERO
-                | TRUE
-                | FALSE
-                | ID
-	            | paramExpr
-                ;
-
-// TODO: Check for reserved words
-ID              : [a-z]+
+ifThen          : IF expr THEN expr ELSE expr
                 ;
 
 type            : NAT
                 | BOOL
                 ;
 
-ifThen          : IF application THEN application ELSE application
+IF              : 'if'
                 ;
 
-isZeroCheck     : ISZERO application
+ELSE            : 'else'
                 ;
 
-arithmeticOps   : operator application
+THEN            : 'then'
                 ;
 
-paramExpr       : '(' expr ')'
-                ;
-
-operator        : SUCC
-                | PRED
-                ;
-
-RESERVEDWORDS   : IF
-                | THEN
-                | ELSE
-                | PRED
-                | SUCC
-                | TYPES
-                | ISZERO
-                | TRUE
-                | FALSE
-                ;
-
-TYPES           : NAT
-                | BOOL
-                ;
-
-
-ZERO            : '0'
+ISZERO          : 'iszero'
                 ;
 
 SUCC            : 'succ'
@@ -73,22 +39,10 @@ SUCC            : 'succ'
 PRED            : 'pred'
                 ;
 
-TRUE            : 'true'
+ID              : [a-z]+
                 ;
 
-FALSE           : 'false'
-                ;
-
-IF              : 'if'
-                ;
-
-THEN            : 'then'
-                ;
-
-ELSE            : 'else'
-                ;
-
-ISZERO          : 'iszero'
+DIGIT           : [0-9]+
                 ;
 
 NAT             : 'Nat'
@@ -97,5 +51,5 @@ NAT             : 'Nat'
 BOOL            : 'Bool'
                 ;
 
-WS              : [ \t\r\n]+ -> skip
+WS              : [ \t\r\n]+    -> skip
                 ;

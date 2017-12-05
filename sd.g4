@@ -2,7 +2,7 @@ grammar sd;
 
 expr            : ID
                 | DIGIT
-                | 'λ' ID ':' type ('=>'|'→') expr
+                | 'λ' ID ':' r_type ('=>'|'→') expr
                 | expr expr
                 | '(' expr ')'
                 | arithmeticOps expr
@@ -17,7 +17,7 @@ arithmeticOps   : SUCC
 ifThen          : IF expr THEN expr ELSE expr
                 ;
 
-type            : NAT
+r_type          : NAT
                 | BOOL
                 ;
 

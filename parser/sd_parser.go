@@ -51,7 +51,7 @@ var symbolicNames = []string{
 }
 
 var ruleNames = []string{
-	"expr", "arithmeticOps", "ifThen", "r_type",
+	"expr", "arithmeticOps", "ifThen", "funcType",
 }
 var decisionToDFA = make([]*antlr.DFA, len(deserializedATN.DecisionToState))
 
@@ -106,7 +106,7 @@ const (
 	sdParserRULE_expr          = 0
 	sdParserRULE_arithmeticOps = 1
 	sdParserRULE_ifThen        = 2
-	sdParserRULE_r_type        = 3
+	sdParserRULE_funcType      = 3
 )
 
 // IExprContext is an interface to support dynamic dispatch.
@@ -333,14 +333,14 @@ func (s *AbstractionContext) ID() antlr.TerminalNode {
 	return s.GetToken(sdParserID, 0)
 }
 
-func (s *AbstractionContext) R_type() IR_typeContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IR_typeContext)(nil)).Elem(), 0)
+func (s *AbstractionContext) FuncType() IFuncTypeContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IFuncTypeContext)(nil)).Elem(), 0)
 
 	if t == nil {
 		return nil
 	}
 
-	return t.(IR_typeContext)
+	return t.(IFuncTypeContext)
 }
 
 func (s *AbstractionContext) Expr() IExprContext {
@@ -582,7 +582,7 @@ func (p *sdParser) expr(_p int) (localctx IExprContext) {
 		}
 		{
 			p.SetState(14)
-			p.R_type()
+			p.FuncType()
 		}
 		p.SetState(15)
 		_la = p.GetTokenStream().LA(1)
@@ -928,75 +928,75 @@ func (p *sdParser) IfThen() (localctx IIfThenContext) {
 	return localctx
 }
 
-// IR_typeContext is an interface to support dynamic dispatch.
-type IR_typeContext interface {
+// IFuncTypeContext is an interface to support dynamic dispatch.
+type IFuncTypeContext interface {
 	antlr.ParserRuleContext
 
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
-	// IsR_typeContext differentiates from other interfaces.
-	IsR_typeContext()
+	// IsFuncTypeContext differentiates from other interfaces.
+	IsFuncTypeContext()
 }
 
-type R_typeContext struct {
+type FuncTypeContext struct {
 	*antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
-func NewEmptyR_typeContext() *R_typeContext {
-	var p = new(R_typeContext)
+func NewEmptyFuncTypeContext() *FuncTypeContext {
+	var p = new(FuncTypeContext)
 	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
-	p.RuleIndex = sdParserRULE_r_type
+	p.RuleIndex = sdParserRULE_funcType
 	return p
 }
 
-func (*R_typeContext) IsR_typeContext() {}
+func (*FuncTypeContext) IsFuncTypeContext() {}
 
-func NewR_typeContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *R_typeContext {
-	var p = new(R_typeContext)
+func NewFuncTypeContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *FuncTypeContext {
+	var p = new(FuncTypeContext)
 
 	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
 
 	p.parser = parser
-	p.RuleIndex = sdParserRULE_r_type
+	p.RuleIndex = sdParserRULE_funcType
 
 	return p
 }
 
-func (s *R_typeContext) GetParser() antlr.Parser { return s.parser }
+func (s *FuncTypeContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *R_typeContext) NAT() antlr.TerminalNode {
+func (s *FuncTypeContext) NAT() antlr.TerminalNode {
 	return s.GetToken(sdParserNAT, 0)
 }
 
-func (s *R_typeContext) BOOL() antlr.TerminalNode {
+func (s *FuncTypeContext) BOOL() antlr.TerminalNode {
 	return s.GetToken(sdParserBOOL, 0)
 }
 
-func (s *R_typeContext) GetRuleContext() antlr.RuleContext {
+func (s *FuncTypeContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *R_typeContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+func (s *FuncTypeContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
 	return antlr.TreesStringTree(s, ruleNames, recog)
 }
 
-func (s *R_typeContext) EnterRule(listener antlr.ParseTreeListener) {
+func (s *FuncTypeContext) EnterRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(sdListener); ok {
-		listenerT.EnterR_type(s)
+		listenerT.EnterFuncType(s)
 	}
 }
 
-func (s *R_typeContext) ExitRule(listener antlr.ParseTreeListener) {
+func (s *FuncTypeContext) ExitRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(sdListener); ok {
-		listenerT.ExitR_type(s)
+		listenerT.ExitFuncType(s)
 	}
 }
 
-func (p *sdParser) R_type() (localctx IR_typeContext) {
-	localctx = NewR_typeContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 6, sdParserRULE_r_type)
+func (p *sdParser) FuncType() (localctx IFuncTypeContext) {
+	localctx = NewFuncTypeContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 6, sdParserRULE_funcType)
 	var _la int
 
 	defer func() {

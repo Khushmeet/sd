@@ -2,7 +2,7 @@ grammar sd;
 
 expr            : ID                                    #symbol
                 | DIGIT                                 #number
-                | 'λ' ID ':' r_type ('=>'|'→') expr     #abstraction
+                | 'λ' ID ':' funcType ('=>'|'→') expr     #abstraction
                 | expr expr                             #applicatio
                 | '(' expr ')'                          #expression
                 | arithmeticOps expr                    #arithmeicExps
@@ -17,7 +17,7 @@ arithmeticOps   : SUCC
 ifThen          : IF expr THEN expr ELSE expr
                 ;
 
-r_type          : NAT
+funcType          : NAT
                 | BOOL
                 ;
 

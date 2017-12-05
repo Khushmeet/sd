@@ -38,8 +38,8 @@ type sdListener interface {
 	// EnterIfThen is called when entering the ifThen production.
 	EnterIfThen(c *IfThenContext)
 
-	// EnterR_type is called when entering the r_type production.
-	EnterR_type(c *R_typeContext)
+	// EnterFuncType is called when entering the funcType production.
+	EnterFuncType(c *FuncTypeContext)
 
 	// ExitSymbol is called when exiting the symbol production.
 	ExitSymbol(c *SymbolContext)
@@ -71,6 +71,6 @@ type sdListener interface {
 	// ExitIfThen is called when exiting the ifThen production.
 	ExitIfThen(c *IfThenContext)
 
-	// ExitR_type is called when exiting the r_type production.
-	ExitR_type(c *R_typeContext)
+	// ExitFuncType is called when exiting the funcType production.
+	ExitFuncType(c *FuncTypeContext)
 }

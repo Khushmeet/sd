@@ -81,8 +81,8 @@ func (s *BasesdListener) EnterIfThen(ctx *IfThenContext) {}
 // ExitIfThen is called when production ifThen is exited.
 func (s *BasesdListener) ExitIfThen(ctx *IfThenContext) {}
 
-// EnterR_type is called when production r_type is entered.
-func (s *BasesdListener) EnterR_type(ctx *R_typeContext) {}
+// EnterFuncType is called when production funcType is entered.
+func (s *BasesdListener) EnterFuncType(ctx *FuncTypeContext) {}
 
-// ExitR_type is called when production r_type is exited.
-func (s *BasesdListener) ExitR_type(ctx *R_typeContext) {}
+// ExitFuncType is called when production funcType is exited.
+func (s *BasesdListener) ExitFuncType(ctx *FuncTypeContext) {}

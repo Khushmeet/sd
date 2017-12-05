@@ -1,13 +1,13 @@
 grammar sd;
 
-expr            : ID
-                | DIGIT
-                | 'λ' ID ':' r_type ('=>'|'→') expr
-                | expr expr
-                | '(' expr ')'
-                | arithmeticOps expr
-                | ISZERO expr
-                | ifThen
+expr            : ID                                    #symbol
+                | DIGIT                                 #number
+                | 'λ' ID ':' r_type ('=>'|'→') expr     #abstraction
+                | expr expr                             #applicatio
+                | '(' expr ')'                          #expression
+                | arithmeticOps expr                    #arithmeicExps
+                | ISZERO expr                           #checkZero
+                | ifThen                                #ifElseExpr
                 ;
 
 arithmeticOps   : SUCC

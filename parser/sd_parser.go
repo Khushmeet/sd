@@ -147,15 +147,193 @@ func NewExprContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokin
 
 func (s *ExprContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *ExprContext) ID() antlr.TerminalNode {
+func (s *ExprContext) CopyFrom(ctx *ExprContext) {
+	s.BaseParserRuleContext.CopyFrom(ctx.BaseParserRuleContext)
+}
+
+func (s *ExprContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *ExprContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+	return antlr.TreesStringTree(s, ruleNames, recog)
+}
+
+type SymbolContext struct {
+	*ExprContext
+}
+
+func NewSymbolContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *SymbolContext {
+	var p = new(SymbolContext)
+
+	p.ExprContext = NewEmptyExprContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*ExprContext))
+
+	return p
+}
+
+func (s *SymbolContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *SymbolContext) ID() antlr.TerminalNode {
 	return s.GetToken(sdParserID, 0)
 }
 
-func (s *ExprContext) DIGIT() antlr.TerminalNode {
+func (s *SymbolContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(sdListener); ok {
+		listenerT.EnterSymbol(s)
+	}
+}
+
+func (s *SymbolContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(sdListener); ok {
+		listenerT.ExitSymbol(s)
+	}
+}
+
+type NumberContext struct {
+	*ExprContext
+}
+
+func NewNumberContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NumberContext {
+	var p = new(NumberContext)
+
+	p.ExprContext = NewEmptyExprContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*ExprContext))
+
+	return p
+}
+
+func (s *NumberContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *NumberContext) DIGIT() antlr.TerminalNode {
 	return s.GetToken(sdParserDIGIT, 0)
 }
 
-func (s *ExprContext) R_type() IR_typeContext {
+func (s *NumberContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(sdListener); ok {
+		listenerT.EnterNumber(s)
+	}
+}
+
+func (s *NumberContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(sdListener); ok {
+		listenerT.ExitNumber(s)
+	}
+}
+
+type ExpressionContext struct {
+	*ExprContext
+}
+
+func NewExpressionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ExpressionContext {
+	var p = new(ExpressionContext)
+
+	p.ExprContext = NewEmptyExprContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*ExprContext))
+
+	return p
+}
+
+func (s *ExpressionContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *ExpressionContext) Expr() IExprContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IExprContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IExprContext)
+}
+
+func (s *ExpressionContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(sdListener); ok {
+		listenerT.EnterExpression(s)
+	}
+}
+
+func (s *ExpressionContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(sdListener); ok {
+		listenerT.ExitExpression(s)
+	}
+}
+
+type CheckZeroContext struct {
+	*ExprContext
+}
+
+func NewCheckZeroContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *CheckZeroContext {
+	var p = new(CheckZeroContext)
+
+	p.ExprContext = NewEmptyExprContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*ExprContext))
+
+	return p
+}
+
+func (s *CheckZeroContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *CheckZeroContext) ISZERO() antlr.TerminalNode {
+	return s.GetToken(sdParserISZERO, 0)
+}
+
+func (s *CheckZeroContext) Expr() IExprContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IExprContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IExprContext)
+}
+
+func (s *CheckZeroContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(sdListener); ok {
+		listenerT.EnterCheckZero(s)
+	}
+}
+
+func (s *CheckZeroContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(sdListener); ok {
+		listenerT.ExitCheckZero(s)
+	}
+}
+
+type AbstractionContext struct {
+	*ExprContext
+}
+
+func NewAbstractionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *AbstractionContext {
+	var p = new(AbstractionContext)
+
+	p.ExprContext = NewEmptyExprContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*ExprContext))
+
+	return p
+}
+
+func (s *AbstractionContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *AbstractionContext) ID() antlr.TerminalNode {
+	return s.GetToken(sdParserID, 0)
+}
+
+func (s *AbstractionContext) R_type() IR_typeContext {
 	var t = s.GetTypedRuleContext(reflect.TypeOf((*IR_typeContext)(nil)).Elem(), 0)
 
 	if t == nil {
@@ -165,7 +343,87 @@ func (s *ExprContext) R_type() IR_typeContext {
 	return t.(IR_typeContext)
 }
 
-func (s *ExprContext) AllExpr() []IExprContext {
+func (s *AbstractionContext) Expr() IExprContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IExprContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IExprContext)
+}
+
+func (s *AbstractionContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(sdListener); ok {
+		listenerT.EnterAbstraction(s)
+	}
+}
+
+func (s *AbstractionContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(sdListener); ok {
+		listenerT.ExitAbstraction(s)
+	}
+}
+
+type IfElseExprContext struct {
+	*ExprContext
+}
+
+func NewIfElseExprContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *IfElseExprContext {
+	var p = new(IfElseExprContext)
+
+	p.ExprContext = NewEmptyExprContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*ExprContext))
+
+	return p
+}
+
+func (s *IfElseExprContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *IfElseExprContext) IfThen() IIfThenContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IIfThenContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IIfThenContext)
+}
+
+func (s *IfElseExprContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(sdListener); ok {
+		listenerT.EnterIfElseExpr(s)
+	}
+}
+
+func (s *IfElseExprContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(sdListener); ok {
+		listenerT.ExitIfElseExpr(s)
+	}
+}
+
+type ApplicatioContext struct {
+	*ExprContext
+}
+
+func NewApplicatioContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ApplicatioContext {
+	var p = new(ApplicatioContext)
+
+	p.ExprContext = NewEmptyExprContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*ExprContext))
+
+	return p
+}
+
+func (s *ApplicatioContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *ApplicatioContext) AllExpr() []IExprContext {
 	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*IExprContext)(nil)).Elem())
 	var tst = make([]IExprContext, len(ts))
 
@@ -178,7 +436,7 @@ func (s *ExprContext) AllExpr() []IExprContext {
 	return tst
 }
 
-func (s *ExprContext) Expr(i int) IExprContext {
+func (s *ApplicatioContext) Expr(i int) IExprContext {
 	var t = s.GetTypedRuleContext(reflect.TypeOf((*IExprContext)(nil)).Elem(), i)
 
 	if t == nil {
@@ -188,7 +446,37 @@ func (s *ExprContext) Expr(i int) IExprContext {
 	return t.(IExprContext)
 }
 
-func (s *ExprContext) ArithmeticOps() IArithmeticOpsContext {
+func (s *ApplicatioContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(sdListener); ok {
+		listenerT.EnterApplicatio(s)
+	}
+}
+
+func (s *ApplicatioContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(sdListener); ok {
+		listenerT.ExitApplicatio(s)
+	}
+}
+
+type ArithmeicExpsContext struct {
+	*ExprContext
+}
+
+func NewArithmeicExpsContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ArithmeicExpsContext {
+	var p = new(ArithmeicExpsContext)
+
+	p.ExprContext = NewEmptyExprContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*ExprContext))
+
+	return p
+}
+
+func (s *ArithmeicExpsContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *ArithmeicExpsContext) ArithmeticOps() IArithmeticOpsContext {
 	var t = s.GetTypedRuleContext(reflect.TypeOf((*IArithmeticOpsContext)(nil)).Elem(), 0)
 
 	if t == nil {
@@ -198,37 +486,25 @@ func (s *ExprContext) ArithmeticOps() IArithmeticOpsContext {
 	return t.(IArithmeticOpsContext)
 }
 
-func (s *ExprContext) ISZERO() antlr.TerminalNode {
-	return s.GetToken(sdParserISZERO, 0)
-}
-
-func (s *ExprContext) IfThen() IIfThenContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IIfThenContext)(nil)).Elem(), 0)
+func (s *ArithmeicExpsContext) Expr() IExprContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IExprContext)(nil)).Elem(), 0)
 
 	if t == nil {
 		return nil
 	}
 
-	return t.(IIfThenContext)
+	return t.(IExprContext)
 }
 
-func (s *ExprContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *ExprContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
-	return antlr.TreesStringTree(s, ruleNames, recog)
-}
-
-func (s *ExprContext) EnterRule(listener antlr.ParseTreeListener) {
+func (s *ArithmeicExpsContext) EnterRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(sdListener); ok {
-		listenerT.EnterExpr(s)
+		listenerT.EnterArithmeicExps(s)
 	}
 }
 
-func (s *ExprContext) ExitRule(listener antlr.ParseTreeListener) {
+func (s *ArithmeicExpsContext) ExitRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(sdListener); ok {
-		listenerT.ExitExpr(s)
+		listenerT.ExitArithmeicExps(s)
 	}
 }
 
@@ -270,18 +546,28 @@ func (p *sdParser) expr(_p int) (localctx IExprContext) {
 
 	switch p.GetTokenStream().LA(1) {
 	case sdParserID:
+		localctx = NewSymbolContext(p, localctx)
+		p.SetParserRuleContext(localctx)
+		_prevctx = localctx
+
 		{
 			p.SetState(9)
 			p.Match(sdParserID)
 		}
 
 	case sdParserDIGIT:
+		localctx = NewNumberContext(p, localctx)
+		p.SetParserRuleContext(localctx)
+		_prevctx = localctx
 		{
 			p.SetState(10)
 			p.Match(sdParserDIGIT)
 		}
 
 	case sdParserT__0:
+		localctx = NewAbstractionContext(p, localctx)
+		p.SetParserRuleContext(localctx)
+		_prevctx = localctx
 		{
 			p.SetState(11)
 			p.Match(sdParserT__0)
@@ -313,6 +599,9 @@ func (p *sdParser) expr(_p int) (localctx IExprContext) {
 		}
 
 	case sdParserT__4:
+		localctx = NewExpressionContext(p, localctx)
+		p.SetParserRuleContext(localctx)
+		_prevctx = localctx
 		{
 			p.SetState(18)
 			p.Match(sdParserT__4)
@@ -327,6 +616,9 @@ func (p *sdParser) expr(_p int) (localctx IExprContext) {
 		}
 
 	case sdParserSUCC, sdParserPRED:
+		localctx = NewArithmeicExpsContext(p, localctx)
+		p.SetParserRuleContext(localctx)
+		_prevctx = localctx
 		{
 			p.SetState(22)
 			p.ArithmeticOps()
@@ -337,6 +629,9 @@ func (p *sdParser) expr(_p int) (localctx IExprContext) {
 		}
 
 	case sdParserISZERO:
+		localctx = NewCheckZeroContext(p, localctx)
+		p.SetParserRuleContext(localctx)
+		_prevctx = localctx
 		{
 			p.SetState(25)
 			p.Match(sdParserISZERO)
@@ -347,6 +642,9 @@ func (p *sdParser) expr(_p int) (localctx IExprContext) {
 		}
 
 	case sdParserIF:
+		localctx = NewIfElseExprContext(p, localctx)
+		p.SetParserRuleContext(localctx)
+		_prevctx = localctx
 		{
 			p.SetState(27)
 			p.IfThen()
@@ -366,7 +664,7 @@ func (p *sdParser) expr(_p int) (localctx IExprContext) {
 				p.TriggerExitRuleEvent()
 			}
 			_prevctx = localctx
-			localctx = NewExprContext(p, _parentctx, _parentState)
+			localctx = NewApplicatioContext(p, NewExprContext(p, _parentctx, _parentState))
 			p.PushNewRecursionContext(localctx, _startState, sdParserRULE_expr)
 			p.SetState(30)
 

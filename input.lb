@@ -1,1 +1,1 @@
-((λ a: Nat → λ b: Nat → succ a) 0) succ 0
+(λ a: Bool → succ succ 0) iszero 0

@@ -10,6 +10,13 @@ type Scope struct {
 }
 
 /*
+SymbolTable keep tracks of the varibales in the program
+*/
+type SymbolTable struct {
+	Table []Scope
+}
+
+/*
 Add creates a new scope
 */
 func Add(x string, val int) Scope {
@@ -27,13 +34,6 @@ Get retrives value from scope
 */
 func (s *Scope) Get(x string) int {
 	return s.S[x]
-}
-
-/*
-SymbolTable keep tracks of the varibales in the program
-*/
-type SymbolTable struct {
-	Table []Scope
 }
 
 /*

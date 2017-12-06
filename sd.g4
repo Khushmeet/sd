@@ -1,8 +1,11 @@
 grammar sd;
 
-expr            : ID                                    #symbol
+
+expr            : TRUE	                                #trueLiteral
+	            | FALSE	                                #falseLiteral 
+                | ID                                    #symbol
                 | DIGIT                                 #number
-                | 'λ' ID ':' funcType ('=>'|'→') expr     #abstraction
+                | 'λ' ID ('=>'|'→') expr                #abstraction
                 | expr expr                             #applicatio
                 | '(' expr ')'                          #expression
                 | arithmeticOps expr                    #arithmeicExps
@@ -17,9 +20,6 @@ arithmeticOps   : SUCC
 ifThen          : IF expr THEN expr ELSE expr
                 ;
 
-funcType          : NAT
-                | BOOL
-                ;
 
 IF              : 'if'
                 ;
@@ -49,6 +49,12 @@ NAT             : 'Nat'
                 ;
 
 BOOL            : 'Bool'
+                ;
+
+TRUE            : 'true'
+                ;
+
+FALSE           : 'false'
                 ;
 
 WS              : [ \t\r\n]+    -> skip
